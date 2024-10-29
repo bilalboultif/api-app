@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title id="title">Quran Ayah Fetcher</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        select,
+        button {
+            padding: 10px;
+            margin: 5px;
+        }
+
+        #ayahDisplay,
+        #tafsirDisplay {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+
+        /* General styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            /* Light background for contrast */
+            padding-bottom: 60px;
+            /* Prevent content from being hidden behind the footer */
+        }
+
+        /* Navigation bar styles */
+        nav {
+            background-color: #4CAF50;
+            /* Green background */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            /* Fixes the navbar to the top */
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            /* Ensures navbar is above other content */
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            /* Flexbox for horizontal alignment */
+            justify-content: center;
+            /* Center the nav items */
+        }
+
+        nav ul li {
+            margin: 0 15px;
+            /* Space between items */
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            /* Padding for clickable area */
+            border-radius: 5px;
+            /* Rounded corners */
+            transition: background-color 0.3s ease, transform 0.2s;
+            /* Transition for hover effects */
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            /* Light overlay on hover */
+            transform: scale(1.05);
+            /* Slightly enlarge on hover */
+        }
+
+        /* Footer styles */
+        footer {
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
+            position: fixed;
+            /* Fixes the footer to the bottom */
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        /* Main content styles */
+        .container {
+            padding: 80px 20px;
+            /* Add padding at the top to avoid overlap with navbar */
+        }
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+        }
+        .icon {
+            width: 5.625rem;
+            height: 5.625rem;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+        .icon:hover > i{
+            color: blue;
+            background-color: rgba(255, 255, 255, 0.281);
+        }
+        .icon::before {
+            background: var(--color);
+            content: "";
+            position: absolute;
+            width: 130%;
+            height: 130%;
+            left: -110%;
+            top: 80%;
+            transform: rotate(45deg);
+        }
+        .icon:hover::before{
+            animation: slide 0.7s forwards;
+        }
+        @keyframes slide {
+            50% {
+                left: 10%;
+                top: -40%;
+            }
+            100% {
+                left: -15%;
+                top: -15%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="fatwa.html">Search Fatwa</a></li>
+            <li><a href="quran.html">Quran Ayah Fetcher</a></li>
+            
+        </ul>
+        <select id="languageSelect">
+            <option value="ar">عربي</option>
+            <option value="en">English</option>
+            <option value="fr">Français</option>
+            <option value="es">Español</option>
+            <option value="pt">Português</option>
+            <option value="de">Deutsch</option>
+            <option value="nl">Nederlands</option>
+            <option value="tr">Türkçe</option>
+            <option value="az">Azərbaycanca</option>
+            <option value="sq">Shqip</option>
+            <option value="bs">Bosanski</option>
+            <option value="sr">Српски</option>
+            <option value="lt">Lietuviškai</option>
+            <option value="uz">O'zbekcha</option>
+            <option value="tg">Тоҷикӣ</option>
+            <option value="ky">Кыргызча</option>
+            <option value="id">Bahasa Indonesia</option>
+            <option value="tl">Tagalog</option>
+            <option value="zh">中文</option>
+            <option value="ug">ئۇيغۇرچە</option>
+            <option value="ja">日本語</option>
+            <option value="vi">Tiếng Việt</option>
+            <option value="km">ភាសាខ្មែរ</option>
+            <option value="fa">فارسی</option>
+            <option value="ku">Kurdî</option>
+            <option value="ps">پښتو</option>
+            <option value="ur">اردو</option>
+            <option value="hi">हिन्दी</option>
+            <option value="te">తెలుగు</option>
+            <option value="gu">ગુજરાતી</option>
+            <option value="ml">മലയാളം</option>
+            <option value="kn">ಕನ್ನಡ</option>
+            <option value="as">অসমীয়া</option>
+            <option value="pa">ਪੰਜਾਬੀ</option>
+            <option value="ta">தமிழ்</option>
+            <option value="si">සිංහල</option>
+            <option value="sw">Kiswahili</option>
+            <option value="so">Af-Soomaali</option>
+            <option value="am">አማርኛ</option>
+            <option value="yo">Yoruba</option>
+            <option value="ha">Hausa</option>
+            <option value="om">Oromo</option>
+            <option value="aa">Afar</option>
+            <option value="nk">Nkuna</option>
+            <option value="rw">Ikinyarwanda</option>
+            <option value="rn">Ikirundi</option>
+            <option value="mos">Mooré</option>
+            <option value="asn">Asante</option>
+            <option value="ln">Lingala</option>
+        </select>
+    </nav>
+   
+    <h1>Quran Ayah Fetcher</h1>
+    <label for="surah">Select Surah:</label>
+    <select id="surah">
+        <option value="1">Al-Fatiha</option>
+        <option value="2">Al-Baqarah</option>
+        <option value="3">Al-Imran</option>
+        <option value="4">An-Nisa</option>
+        <option value="5">Al-Ma'idah</option>
+        <option value="6">Al-An'am</option>
+        <option value="7">Al-A'raf</option>
+        <option value="8">Al-Anfal</option>
+        <option value="9">At-Tawbah</option>
+        <option value="10">Yunus</option>
+        <option value="11">Hud</option>
+        <option value="12">Yusuf</option>
+        <option value="13">Ar-Ra'd</option>
+        <option value="14">Ibrahim</option>
+        <option value="15">Al-Hijr</option>
+        <option value="16">An-Nahl</option>
+        <option value="17">Al-Isra</option>
+        <option value="18">Al-Kahf</option>
+        <option value="19">Maryam</option>
+        <option value="20">Taha</option>
+        <option value="21">Al-Anbiya</option>
+        <option value="22">Al-Hajj</option>
+        <option value="23">Al-Mu'minun</option>
+        <option value="24">An-Nur</option>
+        <option value="25">Al-Furqan</option>
+        <option value="26">Ash-Shu'ara</option>
+        <option value="27">An-Naml</option>
+        <option value="28">Al-Qasas</option>
+        <option value="29">Al-Ankabut</option>
+        <option value="30">Ar-Rum</option>
+        <option value="31">Luqman</option>
+        <option value="32">As-Sajda</option>
+        <option value="33">Al-Ahzab</option>
+        <option value="34">Saba</option>
+        <option value="35">Fatir</option>
+        <option value="36">Ya-Sin</option>
+        <option value="37">As-Saffat</option>
+        <option value="38">Sad</option>
+        <option value="39">Az-Zumar</option>
+        <option value="40">Ghafir</option>
+        <option value="41">Fussilat</option>
+        <option value="42">Ash-Shura</option>
+        <option value="43">Az-Zukhruf</option>
+        <option value="44">Ad-Dukhan</option>
+        <option value="45">Al-Jathiya</option>
+        <option value="46">Al-Ahqaf</option>
+        <option value="47">Muhammad</option>
+        <option value="48">Al-Fath</option>
+        <option value="49">Al-Hujurat</option>
+        <option value="50">Qaf</option>
+        <option value="51">Adh-Dhariyat</option>
+        <option value="52">At-Tur</option>
+        <option value="53">An-Najm</option>
+        <option value="54">Al-Qamar</option>
+        <option value="55">Ar-Rahman</option>
+        <option value="56">Al-Waqi'a</option>
+        <option value="57">Al-Hadid</option>
+        <option value="58">Al-Mujadila</option>
+        <option value="59">Al-Hashr</option>
+        <option value="60">Al-Mumtahana</option>
+        <option value="61">As-Saff</option>
+        <option value="62">Al-Jumua</option>
+        <option value="63">Al-Munafiqun</option>
+        <option value="64">At-Taghabun</option>
+        <option value="65">At-Talaq</option>
+        <option value="66">At-Tahrim</option>
+        <option value="67">Al-Mulk</option>
+        <option value="68">Al-Qalam</option>
+        <option value="69">Al-Haaqqa</option>
+        <option value="70">Al-Ma'arij</option>
+        <option value="71">Nuh</option>
+        <option value="72">Al-Jinn</option>
+        <option value="73">Al-Muzzammil</option>
+        <option value="74">Al-Muddaththir</option>
+        <option value="75">Al-Qiyama</option>
+        <option value="76">Al-Insan</option>
+        <option value="77">Al-Mursalat</option>
+        <option value="78">An-Naba</option>
+        <option value="79">An-Nazi'at</option>
+        <option value="80">Abasa</option>
+        <option value="81">At-Takwir</option>
+        <option value="82">Al-Infitar</option>
+        <option value="83">Al-Mutaffifin</option>
+        <option value="84">Al-Inshiqaq</option>
+        <option value="85">Al-Burooj</option>
+        <option value="86">At-Takwir</option>
+        <option value="87">Al-A'la</option>
+        <option value="88">Al-Ghashiya</option>
+        <option value="89">Al-Fajr</option>
+        <option value="90">Al-Balad</option>
+        <option value="91">Ash-Shams</option>
+        <option value="92">Al-Lail</option>
+        <option value="93">Ad-Duha</option>
+        <option value="94">Al-Inshirah</option>
+        <option value="95">At-Tin</option>
+        <option value="96">Al-Alaq</option>
+        <option value="97">Al-Qadr</option>
+        <option value="98">Al-Bayyina</option>
+        <option value="99">Az-Zalzala</option>
+        <option value="100">Al-Adiyat</option>
+        <option value="101">Al-Qari'a</option>
+        <option value="102">At-Takathur</option>
+        <option value="103">Al-Asr</option>
+        <option value="104">Al-Humaza</option>
+        <option value="105">Al-Fil</option>
+        <option value="106">Quraish</option>
+        <option value="107">Al-Ma'un</option>
+        <option value="108">Al-Kawthar</option>
+        <option value="109">Al-Kafirun</option>
+        <option value="110">An-Nasr</option>
+        <option value="111">Al-Masad</option>
+        <option value="112">Al-Ikhlas</option>
+        <option value="113">Al-Falaq</option>
+        <option value="114">An-Nas</option>
+    </select>
+    <label for="ayah">Select Ayah:</label>
+    <select id="ayah">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <!-- Add more Ayah options as needed -->
+    </select>
+    <button id="fetchAyah">Fetch Ayah</button>
+    <div id="ayahDisplay"></div>
+    <h3>Select Tafsir:</h3>
+    <select id="tafsirSelect">
+        <option value="">Select Tafsir</option>
+        <!-- Tafsir options will be populated here -->
+    </select>
+    <button id="fetchTafsir" disabled>Get Tafsir</button>
+    <div id="tafsirDisplay"></div>
+    <select id="translationSelect"></select>
+    <div id="translationDisplay">
+        <h2>Translation</h2>
+        <p id="arabicText"></p>
+        <p id="translatedText"></p>
+        <p id="footnotes"></p>
+    </div>
+    <div class="wrapper"> 
+        <a href="a" class="icon"><i class="fa fa-instagram"></i></a>
+        <a href="a" class="icon"><i class="fa fa-instagram" style="font-size:48px;color:red"></i></a>
+    </div>
+    <footer>
+        <p>&copy; 2024 Muslim App</p>
+    </footer>
+    <script>
+
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+
+            // Translations object
+            const translationsNav = {
+                ar: {
+                    title: "مستخرج آيات القرآن",
+                    selectSurah: "اختر السورة:",
+                    selectAyah: "اختر الآية:",
+                    fetchAyah: "استخرج الآية",
+                    selectTafsir: "اختر التفسير:",
+                    getTafsir: "احصل على التفسير",
+                    translationTitle: "الترجمة"
+                },
+                en: {
+                    title: "Quran Ayah Fetcher",
+                    selectSurah: "Select Surah:",
+                    selectAyah: "Select Ayah:",
+                    fetchAyah: "Fetch Ayah",
+                    selectTafsir: "Select Tafsir:",
+                    getTafsir: "Get Tafsir",
+                    translationTitle: "Translation"
+                },
+                fr: {
+                    title: "Récupérateur d'Ayah du Coran",
+                    selectSurah: "Sélectionnez la sourate :",
+                    selectAyah: "Sélectionnez l'ayah :",
+                    fetchAyah: "Récupérer l'Ayah",
+                    selectTafsir: "Sélectionnez Tafsir :",
+                    getTafsir: "Obtenir Tafsir",
+                    translationTitle: "Traduction"
+                },
+                es: {
+                    title: "Extractor de Ayah del Corán",
+                    selectSurah: "Seleccionar Surah:",
+                    selectAyah: "Seleccionar Ayah:",
+                    fetchAyah: "Extraer Ayah",
+                    selectTafsir: "Seleccionar Tafsir:",
+                    getTafsir: "Obtener Tafsir",
+                    translationTitle: "Traducción"
+                },
+                pt: {
+                    title: "Extrator de Ayah do Alcorão",
+                    selectSurah: "Selecionar Surah:",
+                    selectAyah: "Selecionar Ayah:",
+                    fetchAyah: "Extrair Ayah",
+                    selectTafsir: "Selecionar Tafsir:",
+                    getTafsir: "Obter Tafsir",
+                    translationTitle: "Tradução"
+                },
+                de: {
+                    title: "Koran Ayah Extrahierer",
+                    selectSurah: "Surah auswählen:",
+                    selectAyah: "Ayah auswählen:",
+                    fetchAyah: "Ayah abrufen",
+                    selectTafsir: "Tafsir auswählen:",
+                    getTafsir: "Tafsir abrufen",
+                    translationTitle: "Übersetzung"
+                },
+                nl: {
+                    title: "Koran Ayah Extractor",
+                    selectSurah: "Selecteer Soera:",
+                    selectAyah: "Selecteer Ayah:",
+                    fetchAyah: "Haal Ayah op",
+                    selectTafsir: "Selecteer Tafsir:",
+                    getTafsir: "Haal Tafsir op",
+                    translationTitle: "Vertaling"
+                },
+                tr: {
+                    title: "Kuran Ayet Alıcı",
+                    selectSurah: "Sure Seç:",
+                    selectAyah: "Ayet Seç:",
+                    fetchAyah: "Ayet Getir",
+                    selectTafsir: "Tefsir Seç:",
+                    getTafsir: "Tefsir Al",
+                    translationTitle: "Çeviri"
+                },
+                az: {
+                    title: "Quran Ayə Çıxarışı",
+                    selectSurah: "Surə Seçin:",
+                    selectAyah: "Ayə Seçin:",
+                    fetchAyah: "Ayəni Çıxarın",
+                    selectTafsir: "Təfsir Seçin:",
+                    getTafsir: "Təfsir Al",
+                    translationTitle: "Tərcümə"
+                },
+                sq: {
+                    title: "Ekstraktori i Ayave të Kuranit",
+                    selectSurah: "Zgjidh Suren:",
+                    selectAyah: "Zgjidh Ayen:",
+                    fetchAyah: "Nxirr Ayen",
+                    selectTafsir: "Zgjidh Tafsir:",
+                    getTafsir: "Merr Tafsir",
+                    translationTitle: "Përkthimi"
+                },
+                bs: {
+                    title: "Ekstraktor Ajeta iz Kur'ana",
+                    selectSurah: "Izaberite Suru:",
+                    selectAyah: "Izaberite Ajetu:",
+                    fetchAyah: "Izvuci Ajetu",
+                    selectTafsir: "Izaberite Tafsir:",
+                    getTafsir: "Dobij Tafsir",
+                    translationTitle: "Prevod"
+                },
+                sr: {
+                    title: "Ekstraktor Ajeta iz Kur'ana",
+                    selectSurah: "Izaberite Suru:",
+                    selectAyah: "Izaberite Ajetu:",
+                    fetchAyah: "Izvuci Ajetu",
+                    selectTafsir: "Izaberite Tefsir:",
+                    getTafsir: "Dobij Tefsir",
+                    translationTitle: "Prevod"
+                },
+                lt: {
+                    title: "Koranų Ayatų Ištrauka",
+                    selectSurah: "Pasirinkite Surą:",
+                    selectAyah: "Pasirinkite Ayą:",
+                    fetchAyah: "Gauti Ayą",
+                    selectTafsir: "Pasirinkite Tafsir:",
+                    getTafsir: "Gauti Tafsir",
+                    translationTitle: "Vertimas"
+                },
+                uz: {
+                    title: "Qur’on Ayat Olib Keldi",
+                    selectSurah: "Surani Tanlang:",
+                    selectAyah: "Ayatni Tanlang:",
+                    fetchAyah: "Ayatni Olib Keldi",
+                    selectTafsir: "Tafsirni Tanlang:",
+                    getTafsir: "Tafsirdan Oling",
+                    translationTitle: "Tarjima"
+                },
+                tg: {
+                    title: "Истеҳсолкунандаи Ояти Қуръон",
+                    selectSurah: "Сура интихоб кунед:",
+                    selectAyah: "Оят интихоб кунед:",
+                    fetchAyah: "Оятро истеъмол кунед",
+                    selectTafsir: "Тафсир интихоб кунед:",
+                    getTafsir: "Тафсир гиред",
+                    translationTitle: "Тарҷума"
+                },
+                ky: {
+                    title: "Куран Айтын Алып Келүү",
+                    selectSurah: "Сураны тандаңыз:",
+                    selectAyah: "Айтыны тандаңыз:",
+                    fetchAyah: "Айтыны алып келүү",
+                    selectTafsir: "Тафсирди тандаңыз:",
+                    getTafsir: "Тафсирди алыңыз",
+                    translationTitle: "Таржыма"
+                },
+                id: {
+                    title: "Pengambil Ayah Al-Qur'an",
+                    selectSurah: "Pilih Surah:",
+                    selectAyah: "Pilih Ayah:",
+                    fetchAyah: "Ambil Ayah",
+                    selectTafsir: "Pilih Tafsir:",
+                    getTafsir: "Ambil Tafsir",
+                    translationTitle: "Terjemahan"
+                },
+                tl: {
+                    title: "Tagakuha ng Ayah ng Quran",
+                    selectSurah: "Pumili ng Surah:",
+                    selectAyah: "Pumili ng Ayah:",
+                    fetchAyah: "Kumuha ng Ayah",
+                    selectTafsir: "Pumili ng Tafsir:",
+                    getTafsir: "Kumuha ng Tafsir",
+                    translationTitle: "Pagsasalin"
+                },
+                zh: {
+                    title: "古兰经经文提取器",
+                    selectSurah: "选择苏拉:",
+                    selectAyah: "选择经文:",
+                    fetchAyah: "提取经文",
+                    selectTafsir: "选择 Tafsir:",
+                    getTafsir: "获取 Tafsir",
+                    translationTitle: "翻译"
+                },
+                ug: {
+                    title: "قۇرئان ئايىتى ئېلىش",
+                    selectSurah: "سۇرە تاللاڭ:",
+                    selectAyah: "ئايەت تاللاڭ:",
+                    fetchAyah: "ئايەت ئېلىش",
+                    selectTafsir: "تفسير تاللاڭ:",
+                    getTafsir: "تفسير ئېلىش",
+                    translationTitle: "ترجىمە"
+                },
+                ja: {
+                    title: "コーランアヤフェッチャー",
+                    selectSurah: "スーラを選択:",
+                    selectAyah: "アヤを選択:",
+                    fetchAyah: "アヤを取得",
+                    selectTafsir: "タフスィールを選択:",
+                    getTafsir: "タフスィールを取得",
+                    translationTitle: "翻訳"
+                },
+                vi: {
+                    title: "Trình trích xuất Ayah của Quran",
+                    selectSurah: "Chọn Surah:",
+                    selectAyah: "Chọn Ayah:",
+                    fetchAyah: "Lấy Ayah",
+                    selectTafsir: "Chọn Tafsir:",
+                    getTafsir: "Lấy Tafsir",
+                    translationTitle: "Dịch"
+                },
+                km: {
+                    title: "អ្នកប្រមូលអាយ៉ាដែលមានកូរ៉ាអាង",
+                    selectSurah: "ជ្រើសរើសសូរ៉ា:",
+                    selectAyah: "ជ្រើសរើសអាយ៉ា:",
+                    fetchAyah: "យកអាយ៉ា",
+                    selectTafsir: "ជ្រើសរើសតហ្វស៊ីរ:",
+                    getTafsir: "យកតហ្វស៊ីរ",
+                    translationTitle: "ការប្រែសម្រួល"
+                },
+                fa: {
+                    title: "استخراج آیات قرآن",
+                    selectSurah: "سوره را انتخاب کنید:",
+                    selectAyah: "آیه را انتخاب کنید:",
+                    fetchAyah: "آیه را بگیرید",
+                    selectTafsir: "تفسیر را انتخاب کنید:",
+                    getTafsir: "تفسیر بگیرید",
+                    translationTitle: "ترجمه"
+                },
+                ku: {
+                    title: "Berhevokê Ayetên Kur'anê",
+                    selectSurah: "Sûreyek Hilbijêre:",
+                    selectAyah: "Ayetek Hilbijêre:",
+                    fetchAyah: "Ayetê Girtin",
+                    selectTafsir: "Tefsîrê Hilbijêre:",
+                    getTafsir: "Tefsîrê Bikin",
+                    translationTitle: "Wêjeya"
+                },
+                ps: {
+                    title: "د قرآن آیت استخراج کونکی",
+                    selectSurah: "سوره انتخاب کړئ:",
+                    selectAyah: "آیت انتخاب کړئ:",
+                    fetchAyah: "آیت واخلئ",
+                    selectTafsir: "تفسیر انتخاب کړئ:",
+                    getTafsir: "تفسیر ترلاسه کړئ",
+                    translationTitle: "ژباړه"
+                },
+                ur: {
+                    title: "قرآن آیت حاصل کرنے والا",
+                    selectSurah: "سورہ منتخب کریں:",
+                    selectAyah: "آیت منتخب کریں:",
+                    fetchAyah: "آیت حاصل کریں",
+                    selectTafsir: "تفسیر منتخب کریں:",
+                    getTafsir: "تفسیر حاصل کریں",
+                    translationTitle: "ترجمہ"
+                },
+                hi: {
+                    title: "कुरान आयत निष्कर्षक",
+                    selectSurah: "सूरा चुनें:",
+                    selectAyah: "आयत चुनें:",
+                    fetchAyah: "आयत निकालें",
+                    selectTafsir: "तफसीर चुनें:",
+                    getTafsir: "तफसीर प्राप्त करें",
+                    translationTitle: "अनुवाद"
+                },
+                te: {
+                    title: "కురాన్ ఆయత్ ఫెచ్",
+                    selectSurah: "సూరా ఎంచుకోండి:",
+                    selectAyah: "ఆయత్ ఎంచుకోండి:",
+                    fetchAyah: "ఆయత్ పొందండి",
+                    selectTafsir: "తఫ్సీర్ ఎంచుకోండి:",
+                    getTafsir: "తఫ్సీర్ పొందండి",
+                    translationTitle: "అనువాదం"
+                },
+                gu: {
+                    title: "કુરાન આયત કઢાવનાર",
+                    selectSurah: "સૂરો પસંદ કરો:",
+                    selectAyah: "આયત પસંદ કરો:",
+                    fetchAyah: "આયત મેળવો",
+                    selectTafsir: "તફ્સીરમાં પસંદ કરો:",
+                    getTafsir: "તફ્સીર મેળવો",
+                    translationTitle: "ભાષાંતર"
+                },
+                ml: {
+                    title: "ഖുറാൻ ആയത് എടുക്കുന്നവൻ",
+                    selectSurah: "സൂറ എടുക്കുക:",
+                    selectAyah: "അയത് തിരഞ്ഞെടുക്കുക:",
+                    fetchAyah: "അയത് എടുക്കുക",
+                    selectTafsir: "തഫ്സീര് തിരഞ്ഞെടുക്കുക:",
+                    getTafsir: "തഫ്സീര് എടുക്കുക",
+                    translationTitle: "തർജ്ജിമ"
+                },
+                kn: {
+                    title: "ಕೋರ್ ಐತ ಹುಟ್ಟಿಸುವವನು",
+                    selectSurah: "ಸುರೆ ಆಯ್ಕೆ ಮಾಡಿ:",
+                    selectAyah: "ಐತ್ ಆಯ್ಕೆ ಮಾಡಿ:",
+                    fetchAyah: "ಐತ್ ಪಡೆಯಿರಿ",
+                    selectTafsir: "ತಫ್ಸೀರ್ ಆಯ್ಕೆ ಮಾಡಿ:",
+                    getTafsir: "ತಫ್ಸೀರ್ ಪಡೆಯಿರಿ",
+                    translationTitle: "ಅನುವಾದ"
+                },
+                as: {
+                    title: "কুরআন আয়াত আহরণ",
+                    selectSurah: "সুরা নির্বাচন করুন:",
+                    selectAyah: "আয়াত নির্বাচন করুন:",
+                    fetchAyah: "আয়াত আহরণ করুন",
+                    selectTafsir: "তাফসীর নির্বাচন করুন:",
+                    getTafsir: "তাফসীর পান",
+                    translationTitle: "অনুবাদ"
+                },
+                pa: {
+                    title: "ਕੁਰਾਨ ਆਯਤ ਐਕਸਟ੍ਰੈਕਟਰ",
+                    selectSurah: "ਸੂਰਤ ਚੁਣੋ:",
+                    selectAyah: "ਆਯਤ ਚੁਣੋ:",
+                    fetchAyah: "ਆਯਤ ਲਓ",
+                    selectTafsir: "ਤਫਸੀਰ ਚੁਣੋ:",
+                    getTafsir: "ਤਫਸੀਰ ਲਓ",
+                    translationTitle: "ਅਨੁਵਾਦ"
+                },
+                ta: {
+                    title: "குறான் அயத்திலிருந்து பெறுபவர்",
+                    selectSurah: "சூரா தேர்வு செய்க:",
+                    selectAyah: "அயத்தை தேர்வு செய்க:",
+                    fetchAyah: "அயத்தைப் பெறுக",
+                    selectTafsir: "தஃப்சீர் தேர்வு செய்க:",
+                    getTafsir: "தஃப்சீர் பெறுக",
+                    translationTitle: "தரிசனம்"
+                },
+                si: {
+                    title: "කුරුආන් ආයාත ලබා ගැනීම",
+                    selectSurah: "සූරාව තෝරන්න:",
+                    selectAyah: "අයාත තෝරන්න:",
+                    fetchAyah: "අයාත ලබා ගන්න",
+                    selectTafsir: "තෞසිර් තෝරන්න:",
+                    getTafsir: "තෞසිර් ලබා ගන්න",
+                    translationTitle: "පරිවර්තනය"
+                },
+                sw: {
+                    title: "Mchukuzi wa Aya ya Qur'ani",
+                    selectSurah: "Chagua Surah:",
+                    selectAyah: "Chagua Aya:",
+                    fetchAyah: "Pata Aya",
+                    selectTafsir: "Chagua Tafsir:",
+                    getTafsir: "Pata Tafsir",
+                    translationTitle: "Tafsiri"
+                },
+                so: {
+                    title: "Qur'aanka Aayadaha Soo Saara",
+                    selectSurah: "Dooro Suura:",
+                    selectAyah: "Dooro Aayad:",
+                    fetchAyah: "Aayada Soo Hel",
+                    selectTafsir: "Dooro Tafsir:",
+                    getTafsir: "Hel Tafsir",
+                    translationTitle: "Tarjumaad"
+                },
+                am: {
+                    title: "ኩሬን አይታ አስተውል",
+                    selectSurah: "ሱራ ይምረጡ:",
+                    selectAyah: "አይታ ይምረጡ:",
+                    fetchAyah: "አይታ ይውሰዱ",
+                    selectTafsir: "ቴፍስይር ይምረጡ:",
+                    getTafsir: "ቴፍስይር ይውሰዱ",
+                    translationTitle: "ትርጉም"
+                },
+                yo: {
+                    title: "Olùkó Àyá Kóránì",
+                    selectSurah: "Yan Surah:",
+                    selectAyah: "Yan Ayá:",
+                    fetchAyah: "Mú Ayá",
+                    selectTafsir: "Yan Tafsir:",
+                    getTafsir: "Gba Tafsir",
+                    translationTitle: "Itumọ"
+                },
+                ha: {
+                    title: "Mai Fitar Aya na Al-Qur'ani",
+                    selectSurah: "Zaɓi Surah:",
+                    selectAyah: "Zaɓi Aya:",
+                    fetchAyah: "Fitar da Aya",
+                    selectTafsir: "Zaɓi Tafsir:",
+                    getTafsir: "Samun Tafsir",
+                    translationTitle: "Fassara"
+                },
+                om: {
+                    title: "Qur'aan Ayya Fudhatto",
+                    selectSurah: "Surah filadhu:",
+                    selectAyah: "Ayya filadhu:",
+                    fetchAyah: "Ayya fudhachuu",
+                    selectTafsir: "Tafsiira filadhu:",
+                    getTafsir: "Tafsiira argachuu",
+                    translationTitle: "Hiikkaa"
+                },
+                aa: {
+                    title: "Quraan Aaya Uxu",
+                    selectSurah: "Uxu Surah:",
+                    selectAyah: "Aaya Uxu:",
+                    fetchAyah: "Uxu Aaya",
+                    selectTafsir: "Uxu Tafsir:",
+                    getTafsir: "Uxu Tafsir",
+                    translationTitle: "Tarjuma"
+                },
+                nk: {
+                    title: "Quran Ayat Mfanaye",
+                    selectSurah: "Dawor Sura:",
+                    selectAyah: "Dawor Ayat:",
+                    fetchAyah: "Mfanaye Ayat",
+                    selectTafsir: "Dawor Tafsir:",
+                    getTafsir: "Mfanaye Tafsir",
+                    translationTitle: "Tarjuma"
+                },
+                rw: {
+                    title: "Umukoro wa Aya y'Ikoran",
+                    selectSurah: "Hitamo Sura:",
+                    selectAyah: "Hitamo Aya:",
+                    fetchAyah: "Pata Aya",
+                    selectTafsir: "Hitamo Tafsir:",
+                    getTafsir: "Fata Tafsir",
+                    translationTitle: "Icyasubizo"
+                },
+                rn: {
+                    title: "Umukoro w'Ijambo ry'Imana",
+                    selectSurah: "Hitamo Sura:",
+                    selectAyah: "Hitamo Ijambo:",
+                    fetchAyah: "Fata Ijambo",
+                    selectTafsir: "Hitamo Tafsir:",
+                    getTafsir: "Fata Tafsir",
+                    translationTitle: "Icyasubizo"
+                },
+                mos: {
+                    title: "Koran Ayah Kóo",
+                    selectSurah: "Wá Kó:",
+                    selectAyah: "Wá Ayah:",
+                    fetchAyah: "Kó Ayah",
+                    selectTafsir: "Wá Tafsir:",
+                    getTafsir: "Kó Tafsir",
+                    translationTitle: "Fàdà"
+                },
+                asn: {
+                    title: "Koran Ayah Narek",
+                    selectSurah: "Sura Narek:",
+                    selectAyah: "Ayah Narek:",
+                    fetchAyah: "Ayah Narek",
+                    selectTafsir: "Tafsir Narek:",
+                    getTafsir: "Tafsir Narek",
+                    translationTitle: "Tafsir"
+                },
+                ln: {
+                    title: "Mchukuzi wa Aya ya Qur'ani",
+                    selectSurah: "Chagua Surah:",
+                    selectAyah: "Chagua Aya:",
+                    fetchAyah: "Pata Aya",
+                    selectTafsir: "Chagua Tafsir:",
+                    getTafsir: "Pata Tafsir",
+                    translationTitle: "Tafsiri"
+                }
+            };
+
+            function changeLanguage(language) {
+                const lang = translationsNav[language];
+                if (lang) {
+                    document.getElementById("title").textContent = lang.title;
+                    document.querySelector("label[for='surah']").textContent = lang.selectSurah;
+                    document.querySelector("label[for='ayah']").textContent = lang.selectAyah;
+                    document.getElementById("fetchAyah").textContent = lang.fetchAyah;
+                    document.querySelector("h3").textContent = lang.selectTafsir;
+                    document.getElementById("fetchTafsir").textContent = lang.getTafsir;
+                    document.getElementById("translationDisplay").querySelector("h2").textContent = lang.translationTitle;
+                    // Update other UI elements as needed
+                }
+            }
+            // Event listener for language change
+            document.getElementById("languageSelect").addEventListener("change", function () {
+                changeLanguage(this.value);
+            });
+            const tafsirFiles = [
+        'https://bilal-boultif.vercel.app/data/api/tafseerQuranAll1.json',
+        'https://bilal-boultif.vercel.app/data/api/tafseerQuranAll2.json'
+    ];
+            // Initialize with default language
+            // Fetch Tafsir options on page load
+           // Fetch Tafsir options on page load
+const fetchTafsirOptions = async () => {
+    try {
+        const response1 = await fetch('https://bilal-boultif.vercel.app/data/api/tafseerQuranAll1.json');
+        const data1 = await response1.json();
+
+        const response2 = await fetch('https://bilal-boultif.vercel.app/data/api/tafseerQuranAll2.json');
+        const data2 = await response2.json();
+
+        const tafsirSelect = document.getElementById('tafsirSelect');
+
+        const tafsirs = [...data1, ...data2]; // Combine both arrays
+
+        tafsirs.forEach(tafsir => {
+            const option = document.createElement('option');
+            option.value = tafsir.tafseer_id; // Adjust based on your JSON structure
+            option.textContent = tafsir.tafseer_name; // Adjust based on your JSON structure
+            tafsirSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error fetching Tafsir:', error);
+    }
+};
+
+fetchTafsirOptions();
+
+
+            // Ayah fetch logic
+            document.getElementById('fetchAyah').addEventListener('click', function () {
+                const surah = document.getElementById('surah').value;
+                const ayah = document.getElementById('ayah').value;
+
+                fetch(`http://api.quran-tafseer.com/quran/${surah}/${ayah}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const ayahDisplay = document.getElementById('ayahDisplay');
+                        ayahDisplay.innerHTML = `<strong>Surah:</strong> ${data.sura_name} <br>
+                                                 <strong>Ayah ${data.ayah_number}:</strong> ${data.text}`;
+                        document.getElementById('fetchTafsir').disabled = false; // Enable Tafsir button
+                    })
+                    .catch(error => {
+                        document.getElementById('ayahDisplay').innerText = 'Error fetching data: ' + error.message;
+                    });
+            });
+            async function populateTranslationSelect() {
+                const translations = await fetchTranslations();
+                const select = document.getElementById('translationSelect');
+
+                translations.forEach(translation => {
+                    const option = document.createElement('option');
+                    option.value = translation.key; // Use the translation key as the value
+                    option.textContent = `${translation.title} (${translation.language_iso_code})`; // Display title and ISO code
+                    select.appendChild(option);
+                });
+            }
+
+            populateTranslationSelect();
+
+            document.getElementById('translationSelect').addEventListener('change', async function () {
+                const selectedKey = this.value;
+                const suraNumber = 1; // Replace with actual sura number
+                const ayaNumber = 1;  // Replace with actual aya number
+                await fetchTranslation(selectedKey, suraNumber, ayaNumber);
+            });
+
+            async function fetchTranslation(translationKey, suraNumber, ayaNumber) {
+                try {
+                    const response = await fetch(`https://quranenc.com/api/v1/translation/aya/${translationKey}/${suraNumber}/${ayaNumber}`);
+                    if (!response.ok) throw new Error('Network response was not ok');
+
+                    const translationData = await response.json();
+                    // Call the function to display the translation
+                    displayTranslation(translationData.result);
+                } catch (error) {
+                    console.error('Error fetching translation:', error);
+                }
+            }
+
+            function displayTranslation(result) {
+                // Select the HTML elements
+                const arabicTextElement = document.getElementById('arabicText');
+                const translatedTextElement = document.getElementById('translatedText');
+                const footnotesElement = document.getElementById('footnotes');
+
+                // Populate the elements with translation data
+                arabicTextElement.textContent = result.arabic_text; // Arabic text
+                translatedTextElement.textContent = result.translation; // Translated text
+                footnotesElement.textContent = result.footnotes; // Footnotes
+            }
+
+            document.getElementById('fetchTafsir').addEventListener('click', function () {
+    const tafsirId = document.getElementById('tafsirSelect').value;
+    const surah = document.getElementById('surah').value;
+    const ayah = document.getElementById('ayah').value;
+
+    let url;
+    if (surah >= 1 && surah <= 25) {
+        url = 'https://bilal-boultif.vercel.app/data/api/tafseerQuranAll1.json';
+    } else if (surah >= 26 && surah <= 114) {
+        url = 'https://bilal-boultif.vercel.app/data/api/tafseerQuranAll2.json';
+    } else {
+        console.error('Invalid Surah selected');
+        return;
+    }
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const tafsirData = data.find(item => item.surah === parseInt(surah) && item.ayah === parseInt(ayah) && item.tafseer_id === tafsirId);
+            if (tafsirData) {
+                const tafsirDisplay = document.getElementById('tafsirDisplay');
+                tafsirDisplay.innerHTML = `<strong>Tafsir (${tafsirData.tafseer_name}):</strong> ${tafsirData.text}`;
+            } else {
+                document.getElementById('tafsirDisplay').innerText = 'Tafsir not found';
+            }
+        })
+        .catch(error => {
+            document.getElementById('tafsirDisplay').innerText = 'Error fetching Tafsir: ' + error.message;
+        });
+});
+
+
+            async function fetchTranslations() {
+                try {
+                    const response = await fetch('https://quranenc.com/api/v1/translations/list');
+                    if (!response.ok) throw new Error('Network response was not ok');
+
+                    const data = await response.json();
+                    return data.translations; // Assuming the response structure contains a "translations" field
+                } catch (error) {
+                    console.error('Error fetching translations:', error);
+                }
+            }
+
+
+            // Dynamic Ayah options based on selected Surah
+            document.getElementById('surah').addEventListener('change', function () {
+                const selectedSurah = parseInt(this.value);
+                const ayahSelect = document.getElementById('ayah');
+                ayahSelect.innerHTML = ''; // Clear existing options
+
+                // Number of Ayahs in each Surah
+                const ayahCounts = {
+                    1: 7,
+                    2: 286,
+                    3: 200,
+                    4: 176,
+                    5: 120,
+                    6: 165,
+                    7: 206,
+                    8: 75,
+                    9: 129,
+                    10: 109,
+                    11: 123,
+                    12: 111,
+                    13: 43,
+                    14: 52,
+                    15: 99,
+                    16: 128,
+                    17: 111,
+                    18: 110,
+                    19: 98,
+                    20: 135,
+                    21: 112,
+                    22: 78,
+                    23: 118,
+                    24: 64,
+                    25: 77,
+                    26: 227,
+                    27: 93,
+                    28: 88,
+                    29: 69,
+                    30: 60,
+                    31: 34,
+                    32: 30,
+                    33: 73,
+                    34: 54,
+                    35: 45,
+                    36: 83,
+                    37: 182,
+                    38: 88,
+                    39: 31,
+                    40: 85,
+                    41: 54,
+                    42: 53,
+                    43: 89,
+                    44: 59,
+                    45: 37,
+                    46: 35,
+                    47: 38,
+                    48: 29,
+                    49: 18,
+                    50: 45,
+                    51: 60,
+                    52: 49,
+                    53: 62,
+                    54: 55,
+                    55: 78,
+                    56: 96,
+                    57: 29,
+                    58: 22,
+                    59: 24,
+                    60: 13,
+                    61: 14,
+                    62: 11,
+                    63: 11,
+                    64: 18,
+                    65: 12,
+                    66: 12,
+                    67: 30,
+                    68: 52,
+                    69: 52,
+                    70: 44,
+                    71: 28,
+                    72: 28,
+                    73: 20,
+                    74: 56,
+                    75: 40,
+                    76: 31,
+                    77: 50,
+                    78: 40,
+                    79: 46,
+                    80: 42,
+                    81: 29,
+                    82: 19,
+                    83: 36,
+                    84: 25,
+                    85: 22,
+                    86: 17,
+                    87: 19,
+                    88: 26,
+                    89: 30,
+                    90: 20,
+                    91: 15,
+                    92: 21,
+                    93: 11,
+                    94: 8,
+                    95: 8,
+                    96: 19,
+                    97: 5,
+                    98: 8,
+                    99: 8,
+                    100: 11,
+                    101: 11,
+                    102: 8,
+                    103: 3,
+                    104: 9,
+                    105: 5,
+                    106: 4,
+                    107: 7,
+                    108: 3,
+                    109: 6,
+                    110: 3,
+                    111: 5,
+                    112: 4,
+                    113: 5,
+                    114: 6,
+                };
+
+                const count = ayahCounts[selectedSurah] || 0;
+                for (let i = 1; i <= count; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = i;
+                    ayahSelect.appendChild(option);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
